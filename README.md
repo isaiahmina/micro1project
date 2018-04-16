@@ -1,4 +1,3 @@
 # micro1project
 
-The master branch is just here to be here; each of the classes are in their respectively named branch
-
+This master branch will hold our up-to-date code; each class is in its respective file
