@@ -18,8 +18,13 @@ public class Memory {
     }   
     //reads the command at cell[i] and returns for processor to use;
     //returns the hexadecimal number representation(where 10=16;hexa to tenary)
-    public int read(int i){ 
-        return Integer.parseInt(cell[i]); //try to keep the filler zeros;will truncate it in runcCommand
+    /**
+     * reads what is in the cell of memory
+     * @param i index of memory you want to read
+     * @return a string of the content in memory of that specific cell
+     */
+    public String read(int i){ 
+        return (cell[i]); //try to keep the filler zeros;will truncate it in runcCommand
     }
     public void write(int address, String data){
         cell[address] = (data);

@@ -13,17 +13,17 @@ package projecttest;
 public class Processor /*extends memory?*/ {
     String[] reg;
     int PC;     //program counter
-    int IR;     //next stetp to execute (PC+1)
+    String IR;     //next stetp to execute (PC+1)
     Memory memory;
     public Processor(){
         reg=new String[8];
         PC=0;
-        IR=0;
+        IR = "0";
     }
     public boolean step() throws Exception{  //returns true if encounters halt command (0)
          IR = memory.read(PC++);
          //this checks if the halt command will be acgivated
-         if( Integer.parseInt(Integer.toString(IR).substring(7, 8)) == 0)
+         if (IR.substring(7, 8).equals("0"))
               return true;
          else
             runCommand(IR);
@@ -40,7 +40,7 @@ public class Processor /*extends memory?*/ {
             System.out.println("Register "+i+": "+reg[i]);
     }
         System.out.println("PC: "+PC);
-        System.out.println("IP: "+IR);
+        System.out.println("IR: "+IR);
     }
     public void setPC(int x){
         PC=x;
@@ -51,7 +51,7 @@ public class Processor /*extends memory?*/ {
     
     /****************************data control****************/
     private void load (int regA, int regB ){
-        reg[regA] =Integer.toString(memory.read(Integer.parseInt(reg[regB])) );
+        reg[regA] = memory.read(Integer.parseInt(reg[regB])) ;
     }
     /**
      * stores cell [pc] as a decimal number in regA
@@ -60,7 +60,7 @@ public class Processor /*extends memory?*/ {
      */
     private void loadc (int regA){
        // reg[regA] = memory.cell[PC++];
-        reg[regA] = Integer.toString(hex2decimal(Integer.toString(memory.read(PC++)).substring(8, 10)));
+        reg[regA] = Integer.toString(hex2decimal((memory.read(PC++)).substring(8, 10)));
         
     }
     /**
@@ -80,7 +80,8 @@ public class Processor /*extends memory?*/ {
      */
     private void add (int regA, int regB){
         //convert to decimal and add both together
-      int addBase10 = hex2decimal(Integer.toString(regA)) + hex2decimal(Integer.toString(regB));
+      int addBase10 = hex2decimal(reg[regA]) + hex2decimal(reg[regB]);
+       // System.out.println("added in base 10 is " + addBase10);
         //convert decimal to hex and store in regA 
        reg[regA] = decimal2hex(addBase10);
     }
@@ -91,7 +92,7 @@ public class Processor /*extends memory?*/ {
      */
     private void mul (int regA, int regB){
                 //convert to decimal and multiplies both together
-      int multBase10 = hex2decimal(Integer.toString(regA)) * hex2decimal(Integer.toString(regB));
+      int multBase10 = hex2decimal(reg[regA]) * hex2decimal(reg[regB]);
         //convert decimal to hex and store in regA 
        reg[regA] = decimal2hex(multBase10);   
     }
@@ -103,7 +104,7 @@ public class Processor /*extends memory?*/ {
      */
     private void sub (int regA, int regB){
                //convert to decimal and add both together
-      int subBase10 = hex2decimal(Integer.toString(regA)) - hex2decimal(Integer.toString(regB));
+      int subBase10 = hex2decimal(reg[regA]) - hex2decimal(reg[regB]);
         //convert decimal to hex and store in regA 
        reg[regA] = decimal2hex(subBase10);
     }
@@ -118,7 +119,7 @@ public class Processor /*extends memory?*/ {
         if (regB ==0)
                 throw new Exception("cannot divide by zero");
               //convert to decimal and add both together
-      int divBase10 = hex2decimal(Integer.toString(regA)) / hex2decimal(Integer.toString(regB));
+      int divBase10 = hex2decimal(reg[regA]) / hex2decimal(reg[regB]);
         //convert decimal to hex and store in regA 
        reg[regA] = decimal2hex(divBase10);
     }
@@ -202,8 +203,8 @@ public class Processor /*extends memory?*/ {
     public void halt(){
         System.out.println("program stopped.");
     }
-    private void runCommand(int command) throws Exception{
-      String hex =  Integer.toString(command);
+    private void runCommand(String command) throws Exception{
+      String hex =  command;
       //takes hte last three numbers
       int commandNumber = Integer.parseInt(hex.substring(7, 8));
       int regA = Integer.parseInt(hex.substring(8, 9));
@@ -223,6 +224,7 @@ public class Processor /*extends memory?*/ {
                 break;
             case 4:
                 add(regA, regB);
+              //  System.out.println("addd " + regA + " and reg b " + regB);
                 break;
             case 5:
                 mul(regA, regB);

@@ -57,7 +57,7 @@ public class Console {
      */
     public void load(String fName) {
         try {
-            File f = new File(fName);
+            File f = new File("C:\\Users\\isao21\\Documents\\GitHub\\micro1project\\testData.txt");
             Scanner scan = new Scanner(f);
             int address = 0;
             while (scan.hasNext()) {
