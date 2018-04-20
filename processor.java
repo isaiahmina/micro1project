@@ -11,12 +11,12 @@ package projecttest;
  */
 
 public class Processor /*extends memory?*/ {
-    int[] reg;
+    String[] reg;
     int PC;     //program counter
     int IR;     //next stetp to execute (PC+1)
     Memory memory;
     public Processor(){
-        reg=new int[8];
+        reg=new String[8];
         PC=0;
         IR=0;
     }
@@ -51,7 +51,7 @@ public class Processor /*extends memory?*/ {
     
     /****************************data control****************/
     private void load (int regA, int regB ){
-        reg[regA] = memory.cell[reg[regB]];
+        reg[regA] =Integer.toString(memory.read(Integer.parseInt(reg[regB])) );
     }
     /**
      * stores cell [pc] as a decimal number in regA
@@ -60,7 +60,7 @@ public class Processor /*extends memory?*/ {
      */
     private void loadc (int regA){
        // reg[regA] = memory.cell[PC++];
-        reg[regA] = hex2decimal(Integer.toString(memory.cell[PC++]).substring(8, 10));
+        reg[regA] = Integer.toString(hex2decimal(Integer.toString(memory.read(PC++)).substring(8, 10)));
         
     }
     /**
@@ -69,7 +69,7 @@ public class Processor /*extends memory?*/ {
      * @param regB should be a hex value
      */
     private void store (int regA, int regB){
-        memory.cell[reg[regA]] = reg[regB];
+        memory.write(Integer.parseInt(reg[regA]), (reg[regB]));
     }
     /**********************arithmetic***********************/
     /**
@@ -82,7 +82,7 @@ public class Processor /*extends memory?*/ {
         //convert to decimal and add both together
       int addBase10 = hex2decimal(Integer.toString(regA)) + hex2decimal(Integer.toString(regB));
         //convert decimal to hex and store in regA 
-       reg[regA] = Integer.parseInt(decimal2hex(addBase10));
+       reg[regA] = decimal2hex(addBase10);
     }
     /**
      * mutliplies two registers together and stores value in regA will be a hex value
@@ -93,7 +93,7 @@ public class Processor /*extends memory?*/ {
                 //convert to decimal and multiplies both together
       int multBase10 = hex2decimal(Integer.toString(regA)) * hex2decimal(Integer.toString(regB));
         //convert decimal to hex and store in regA 
-       reg[regA] = Integer.parseInt(decimal2hex(multBase10));   
+       reg[regA] = decimal2hex(multBase10);   
     }
     /**
      * subtracts the value of register a and register b; 
@@ -105,7 +105,7 @@ public class Processor /*extends memory?*/ {
                //convert to decimal and add both together
       int subBase10 = hex2decimal(Integer.toString(regA)) - hex2decimal(Integer.toString(regB));
         //convert decimal to hex and store in regA 
-       reg[regA] = Integer.parseInt(decimal2hex(subBase10));
+       reg[regA] = decimal2hex(subBase10);
     }
     /**
      * Divides register A and register B, stores value in 
@@ -120,7 +120,7 @@ public class Processor /*extends memory?*/ {
               //convert to decimal and add both together
       int divBase10 = hex2decimal(Integer.toString(regA)) / hex2decimal(Integer.toString(regB));
         //convert decimal to hex and store in regA 
-       reg[regA] = Integer.parseInt(decimal2hex(divBase10));
+       reg[regA] = decimal2hex(divBase10);
     }
     /****************************************logic**************************/
     /**
@@ -131,10 +131,10 @@ public class Processor /*extends memory?*/ {
      * @param regB the index of the register you want to compare
      */
     private void and (int regA, int regB){
-        if (reg[regA] != 0 && reg[regB] !=0)
-            reg[regA] = 1;
+        if (!(reg[regA].equals("0") )&& (!(reg[regB].equals("0") )))
+            reg[regA] = "1";
         else 
-            reg[regA] = 0;
+            reg[regA] = "0";
         
     }
     
@@ -145,10 +145,10 @@ public class Processor /*extends memory?*/ {
      * @param regB index of the register you want to compare
      */
     private void or (int regA, int regB){
-        if (reg[regA] !=0 || reg[regB] != 0)
-            reg[regA] = 1;
+        if (!(reg[regA].equals("0"))  || (!reg[regB].equals("0")))
+            reg[regA] = "1";
         else 
-            reg[regA] = 0;
+            reg[regA] = "0";
     }
     
     /**
@@ -159,35 +159,45 @@ public class Processor /*extends memory?*/ {
      * @param regB the register you want to apply the boolean operation not
      */
     private void not (int regA, int regB){
-        if (reg[regB] !=0)
-            reg[regA] = 0;
+        if (!reg[regB].equals("0"))
+            reg[regA] = "0";
         else 
-            reg[regA] = 1;
+            reg[regA] = "1";
     }
     
     /********************************bitwise************************/
+    /**
+     * converts to binary data and left shifts one 
+     * @param regA index of reg to stores the output
+     * @param regB  index of reg to shift value
+     */
     private void lshift (int regA, int regB){
-        reg[regA] = reg[regB] << 1;
+        reg[regA] = Integer.toString(Integer.parseInt(reg[regB]) << 1);
         
     }
-    
+    /**
+     * converts to binary and right shifts once
+     * @param regA index of reg to stores the output
+     * @param regB index of reg to shift value
+     */
     private void rshift (int regA, int regB){
-        reg[regA] = reg[regB] >>1;
+        reg[regA] =Integer.toString(Integer.parseInt(reg[regB]) >>1) ;
     }
    
     private void bwc (int regA, int regB){
-        reg[regA] = reg[regA] & reg[regB];
+        reg[regA] = Integer.toString(Integer.parseInt(reg[regA]) & Integer.parseInt(reg[regB]));
     }
     
     private void bwd (int regA, int regB){
-        reg[regA] = reg[regA] | reg[regB];
+        reg[regA] = Integer.toString(Integer.parseInt(reg[regA])| Integer.parseInt(reg[regB]));
+               
     }
     /**********************sequence control**************/
     
     
     public void sequenceIf (int regA, int regB){
-    if (reg[regA] != 0)
-        PC = reg[regB];
+    if (!reg[regA].equals("0"))
+        PC = Integer.parseInt(reg[regB]);
 }
     public void halt(){
         System.out.println("program stopped.");

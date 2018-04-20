@@ -1,11 +1,12 @@
-//this file holds the console class; we shouldn't need to modify this at all
-
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package micro1project;
+package projecttest;
+
+//this file holds the console class; we shouldn't need to modify this at all
+
 
 import java.util.*;
 import java.io.*;
@@ -61,7 +62,7 @@ public class Console {
             int address = 0;
             while (scan.hasNext()) {
             /*Prints int tokens of base 16*/
-            memory.write(address++, scan.nextInt(16));
+            memory.write(address++, scan.nextLine());
             }
             cpu.setPC(0);
         } catch (Exception e) {
@@ -90,7 +91,7 @@ public class Console {
      * (display contents of registers), and step N (execute the next N
      * instructions.
      */
-    public void controlLoop() {
+    public void controlLoop() throws Exception {
         System.out.println("type \"help\" for commands");
         while (true) {
             System.out.print("-> ");
