@@ -1,3 +1,3 @@
-# micro1project-isaiah
+# micro1project
 
-this branch will be updated with my code
+This master branch will hold our up-to-date code; each class is in its respective file
