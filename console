@@ -1,5 +1,3 @@
-//this file holds the console class; we shouldn't need to modify this at all
-
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -33,7 +31,7 @@ public class Console {
      * Constructs a memory with specified number of cells, and constructs an
      * associated processor.
      *
-     * @param cap the sepcified amount of memory
+     * @param cap the specified amount of memory
      */
     public Console(int cap) {
         memory = new Memory(cap);
@@ -61,7 +59,7 @@ public class Console {
             int address = 0;
             while (scan.hasNext()) {
             /*Prints int tokens of base 16*/
-            memory.write(address++, scan.nextInt(16));
+            memory.write(address++, scan.nextLine());   //uses nextLine to retain the 0x0000pab format;
             }
             cpu.setPC(0);
         } catch (Exception e) {
