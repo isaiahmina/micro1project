@@ -1,5 +1,3 @@
-//this file holds the processor class
-
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -13,18 +11,33 @@ package micro1project;
  */
 public class Processor /*extends memory?*/ {
     int[] reg;
-    int PC;     //program counter
-    int IR;     //next stetp to execute (PC+1)
+    int PC;         //program counter
+    String IR;      //next stetp to execute (PC+1)
     Memory memory;
     public Processor(){
         reg=new int[8];
         PC=0;
-        IR=0;
+        IR="";
     }
-    public boolean step(){  //returns true if encounters halt command (0)
-         IR = memory.read(PC++);
-         runCommand(IR);
-//        if(command==0)return true;
+    public boolean step(){          //returns true if encounters halt command (0)
+        /*********************************************************************
+         * reads command at memory.cell[PC] and stores into IR, then 
+         * increments PC. 
+         * EX. on first run, reads memory.cell[0] (command0) then increments PC
+         * to 1. If command was a load command, then PC is now reading 
+         * the number to be loaded
+         **********************************************************************/
+         IR = memory.read(PC++);    
+         runCommand(Integer.parseInt(IR)); //reads string IR and returns int value (This int value is hex)
+         
+         /**********************************************************(for above)
+          * can also use Integer.parseInt(string,int) where int is 
+          * the counting system EX: 10 for decimal 16 for hex
+          * can convert from decimal to hex using Integer.toHexString(); it will
+          * convert an int value (in decimal) to a string with the hex value
+          *******************************************************************/
+         
+        //if(command==0)return true;
         /*execute runCommand based on p (int will contain 
         3-digit hexadecimal pab, where p is the operation to run)*/
         return false;
@@ -44,10 +57,10 @@ public class Processor /*extends memory?*/ {
         this.memory = memory;
     }
     private void runCommand(int command){
-        /*
-        Data Control
+        //given command in the format 00000pab...
+        /*Data Control
 1. load a b // reg[a] = cell[reg[b]]
-2. loadc a // reg[a] = cell[PC++]
+2. loadc a // reg[a] = cell[PC++]   might be ++PC since its saying to store the next command line's value into reg[a]
 3. store a b // cell[reg[a]] = reg[b]
 Arithmetic
 4. add a b // reg[a] = reg[a] + reg[b]
