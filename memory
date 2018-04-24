@@ -1,5 +1,3 @@
-//this file holds the memory class
-
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -12,18 +10,19 @@ package micro1project;
  * @author Isaiah
  */
 public class Memory {
-    int[] cell;     //holds the commands, read from the file
+    String[] cell;     //holds the commands, read from the file; must be string
+                       //since some hexadecimal numbers have letters (3b4)
     int cap;
     public Memory (int cap){
         this.cap=cap;
-        cell=new int[cap];
+        cell=new String[cap];
     }   
     //reads the command at cell[i] and returns for processor to use;
-    //returns the hexadecimal number representation(where 10=16;hexa to tenary)
-    public int read(int i){ 
-        return cell[i]; //try to keep the filler zeros;will truncate it in runcCommand
+    //returns the hexadecimal number representation(where 10=16;hexa to decimal)
+    public String read(int i){ 
+        return cell[i];     //returns entire string at cell[i]; includes filler 0's
     }
-    public void write(int address, int data){
+    public void write(int address, String data){
         cell[address]=data;
     }
     public void dump(){ //print out memory values
